@@ -1,0 +1,157 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "HF_HOME": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Python Debugger: Lightning Pretrain",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/lightning_pretrain.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "HF_HOME": "${workspaceFolder}"
+            },
+            "args": [
+                "--model_name_or_path",
+                "allenai/longformer-base-4096",   
+                "--train_file",
+                "pretrain_data/train.json",
+                "--dev_file",
+                "pretrain_data/dev.json",
+                "--item_attr_file",
+                "pretrain_data/meta_data.json",
+                "--output_dir",
+                "result/recformer_pretraining",
+                "--num_train_epochs",
+                "32",
+                "--gradient_accumulation_steps",
+                "32",
+                "--preprocessing_num_workers",
+                "16",
+                "--dataloader_num_workers",
+                "0",
+                "--batch_size",
+                "4",
+                "--learning_rate",
+                "5e-5",
+                "--temp",
+                "0.05",
+                "--device",
+                "1",
+                "--fp16",
+                "--fix_word_embedding",
+            ]
+        },
+        {
+            "name": "Python Debugger: Fine-tune",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/finetune.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "HF_HOME": "${workspaceFolder}"
+            },
+            "args": [
+                "--pretrain_ckpt",
+                "pretrain_ckpt/recformer_seqrec_ckpt.bin",   
+                "--data_path",
+                "finetune_data/Pet",
+                "--num_train_epochs",
+                "8",
+                "--first_stage_start_epoch",
+                "0",
+                "--second_stage_start_epoch",
+                "0",
+                "--batch_size",
+                "1",
+                "--gradient_accumulation_steps",
+                "128",
+                "--device",
+                "0",
+                "--fp16",
+                "--finetune_negative_sample_size",
+                "-1",
+                "--verbose",
+                "4",
+            ]
+        },
+        {
+            "name": "Python Debugger: MTEP",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mtep.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "HF_HOME": "${workspaceFolder}"
+            },
+            "args": [  
+                "--data_path",
+                "finetune_data/Instruments",
+                "--batch_size",
+                "64",
+                "--device",
+                "0",
+                "--fp16",
+                "--finetune_negative_sample_size",
+                "-1",
+                "--verbose",
+                "4",
+            ]
+        },
+        {
+            "name": "Python Debugger: Mistral",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mistral.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "HF_HOME": "${workspaceFolder}",
+            },
+            "args": [  
+                "--data_path",
+                "finetune_data/Instruments",
+                "--batch_size",
+                "4",
+                "--device",
+                "0",
+                "--fp16",
+                "--no_prompt",
+            ]
+        },
+        {
+            "name": "Python Debugger: Mistral Ollama",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mistral_ollama.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "HF_HOME": "${workspaceFolder}",
+            },
+            "args": [  
+                "--data_path",
+                "finetune_data/Office",
+                "--device",
+                "0",
+                "--fp16",
+                "--no_prompt",
+            ]
+        }
+    ]
+}
