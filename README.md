@@ -11,9 +11,9 @@ The original paper: [Text Is All You Need: Learning Language Representations for
 - [Dependencies](#dependencies)
 - [Pretraining](#pretraining)
 - [Pretrained Model](#pretrained-model)
-- [Finetuning](#finetuning)
-- [Contact](#contact)
-- [Citation](#citation)
+- [LoRA Finetuning](#lora-finetuning)
+- [MTEB Leaderboard](#mteb-leaderboard)
+- [Mistral-7B](#mistral-7b)
 
 ## Introduction
 Our project focused on replicating the RecFormer model through an implementation-type approach. Our primary objective was to understand the model and its performance. To achieve this, we conducted various ablation studies to explore the impact of different training strategies and model choices on performance. Through these studies, we discovered that the effectiveness of RecFormer's sequential recommendation heavily depends on the quality of word embeddings rather than the attention matrices within the LongFormer model. Additionally, we observed that without any fine-tuning, the performance of RecFormer was only moderately acceptable. This finding highlights the challenges associated with using language models as cold-start or universal general recommendation models.
