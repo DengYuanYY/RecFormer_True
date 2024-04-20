@@ -1,6 +1,8 @@
 # Replication and Experimental Studies over RecFormer
 
-This repository contains the replication of the paper **"Text Is All You Need: Learning Language Representations for Sequential Recommendation"**, a model learns natural language representations for sequential recommendation.
+This repository contains the replication of the paper **"Text Is All You Need: Learning Language Representations for Sequential Recommendation"**, a model learns natural language representations for sequential recommendation, together with some experiment studies over the paper.
+
+The source code: [GitHub](https://github.com/skymoderator/RecFormer)
 
 The original paper: [Text Is All You Need: Learning Language Representations for Sequential Recommendation](https://arxiv.org/abs/2305.13731).
 
@@ -22,7 +24,7 @@ Our project focused on replicating the RecFormer model through an implementation
 
 In this paper, the authors propose to model user preferences and item features as language representations that can be generalized to new items and datasets. To this end, the authors present a novel framework, named Recformer, which effectively learns language representations for sequential recommendation. Specifically, the authors propose to formulate an item as a "sentence" (word sequence) by flattening item key-value attributes described by text so that an item sequence for a user becomes a sequence of sentences. For recommendation, Recformer is trained to understand the "sentence" sequence and retrieve the next "sentence". To encode item sequences, the authors design a bi-directional Transformer similar to the model Longformer but with different embedding layers for sequential recommendation. For effective representation learning, the authors propose novel pretraining and finetuning methods which combine language understanding and recommendation tasks. Therefore, Recformer can effectively recommend the next item based on language representations.
 
-## Dependencies
+## Dependencies and Operating System
 
 Train and test the model using the following main dependencies:
 - Python 3.10.10
@@ -30,6 +32,8 @@ Train and test the model using the following main dependencies:
 - PyTorch Lightning 2.0.0
 - Transformers 4.28.0
 - Deepspeed 0.9.0
+
+The code is run and tested on Windows 11 with Python 3.10
 
 ## Pretraining
 ### Dataset
