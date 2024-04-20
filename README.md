@@ -1,12 +1,13 @@
-# Learning Language Representations for Sequential Recommendation
+# Replication and Experimental Studies over RecFormer
 
 This repository contains the replication of the paper **"Text Is All You Need: Learning Language Representations for Sequential Recommendation"**, a model learns natural language representations for sequential recommendation.
 
-The KDD 2023 paper [Text Is All You Need: Learning Language Representations for Sequential Recommendation](https://arxiv.org/abs/2305.13731).
+The original paper: [Text Is All You Need: Learning Language Representations for Sequential Recommendation](https://arxiv.org/abs/2305.13731).
 
 ## Quick Links
 
-- [Overview](#overview)
+- [Introduction](#introduction)
+- [Recformer Overview](#recformer-overview)
 - [Dependencies](#dependencies)
 - [Pretraining](#pretraining)
 - [Pretrained Model](#pretrained-model)
@@ -14,7 +15,10 @@ The KDD 2023 paper [Text Is All You Need: Learning Language Representations for 
 - [Contact](#contact)
 - [Citation](#citation)
 
-## Overview
+## Introduction
+Our project focused on replicating the RecFormer model through an implementation-type approach. Our primary objective was to understand the model and its performance. To achieve this, we conducted various ablation studies to explore the impact of different training strategies and model choices on performance. Through these studies, we discovered that the effectiveness of RecFormer's sequential recommendation heavily depends on the quality of word embeddings rather than the attention matrices within the LongFormer model. Additionally, we observed that without any fine-tuning, the performance of RecFormer was only moderately acceptable. This finding highlights the challenges associated with using language models as cold-start or universal general recommendation models.
+
+## Recformer Overview
 
 In this paper, the authors propose to model user preferences and item features as language representations that can be generalized to new items and datasets. To this end, the authors present a novel framework, named Recformer, which effectively learns language representations for sequential recommendation. Specifically, the authors propose to formulate an item as a "sentence" (word sequence) by flattening item key-value attributes described by text so that an item sequence for a user becomes a sequence of sentences. For recommendation, Recformer is trained to understand the "sentence" sequence and retrieve the next "sentence". To encode item sequences, the authors design a bi-directional Transformer similar to the model Longformer but with different embedding layers for sequential recommendation. For effective representation learning, the authors propose novel pretraining and finetuning methods which combine language understanding and recommendation tasks. Therefore, Recformer can effectively recommend the next item based on language representations.
 
@@ -106,7 +110,7 @@ model.load_state_dict(torch.load('recformer_seqrec_ckpt.bin'), strict=False)
 # strict=False because RecformerForSeqRec doesn't have lm_head
 ```
 
-## Finetuning
+## LoRA Finetuning
 ### Dataset
 We use 6 categories in [Amazon dataset](https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/) to evaluate our model:
 
@@ -134,19 +138,16 @@ Our code will train and evaluate the model for the sequential recommendation tas
 
 <strong>Note</strong>: from our empirical results, you can set a smaller maximum length (512 or 256, our model is default to 1024) of Recformer `e.g., config.max_token_num = 512` to obtain more efficient finetuning and inference without obvious performance decay (128 has an obvious decay).
 
-## Contact
+We also provide a VSCode debug script for finetuning, you can refer to `Python Debugger: Fine-tune` in [launch.json](.vscode/launch.json)
 
-If you have any questions related to the code or the paper, feel free to create an issue or email Jiacheng Li (`j9li@ucsd.edu`), the corresponding author of the KDD paper. Thanks!
+## MTEB Leaderboard
+We evaluate the performance of `mxbai-embed-large-v1`, which is one of the leading (and open) model on the [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard). The model is available on [here](https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1). You can run the debugger script `Python Debugger: MTEP` in [launch.json](.vscode/launch.json) to evaluate the model.
 
-## Citation
+## Mistral-7B
+We also evaluate the performance of `Mistral-7B` model on the fine-tuning dataset. We have done some prompt engineering to make the model more suitable for the sequential recommendation task. The model is available on [here](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF). You can run the debugger script `Python Debugger: Mistral` in [launch.json](.vscode/launch.json) to evaluate the model.
 
-Please cite the paper if you use Recformer in your work:
-
-```bibtex
-@article{Li2023TextIA,
-  title={Text Is All You Need: Learning Language Representations for Sequential Recommendation},
-  author={Jiacheng Li and Ming Wang and Jin Li and Jinmiao Fu and Xin Shen and Jingbo Shang and Julian McAuley},
-  journal={Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining},
-  year={2023}
-}
+To evaluate the model for all categories, you can run the following command:
+```bash 
+bash mistral.bat
 ```
+Our code will run all possible configurations (with prompt and without prompt) over all six fune-tuning dataset and return all metrics reported in the KDD paper.
